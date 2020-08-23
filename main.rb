@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
 require './config/config'
+require './bitflyer/bitflyer'
 
 def main
   conf = ConfigList.new
-  puts conf.api_key
-  puts conf.api_secret
+  b = APIClient.new(conf.api_key, conf.api_secret)
+  b.do_request('GET', 'getboard', '', '')
 end
 
 main if __FILE__ == $PROGRAM_NAME
