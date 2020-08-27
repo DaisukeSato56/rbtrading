@@ -8,7 +8,7 @@ require 'uri'
 def main
   conf = ConfigList.new
   b = APIClient.new(conf.api_key, conf.api_secret)
-  b.balance
+  b.ticker('BTC_JPY')
 end
 
 main if __FILE__ == $PROGRAM_NAME

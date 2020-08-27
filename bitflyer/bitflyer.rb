@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require_relative './balance'
+require_relative './ticker'
+
 require 'net/http'
 require 'openssl'
 require 'json'
@@ -45,15 +48,15 @@ class APIClient
     uri.path = '/v1/me/getbalance'
     resp = do_request('GET', uri)
     balance = resp.map { |r| Balance.new(r['currency_code'], r['amount'], r['avaliable']) }
-    puts balance
     balance
   end
-end
 
-class Balance
-  def initialize(current_code, amount, avaliable)
-    @current_code = current_code
-    @amount = amount
-    @avaliable = avaliable
+  def ticker(product_code)
+    uri = URI.parse(BASE_URL)
+    uri.path = '/v1/ticker'
+    uri.query = "product_code=#{product_code}"
+    resp = do_request('GET', uri)
+    ticker = Ticker.new(resp['product_code'], resp['timestamp'], resp['tick_id'], resp['best_bid'], resp['best_ask'], resp['best_bid_size'], resp['best_ask_size'], resp['total_bid_depth'], resp['total_ask_depth'], resp['ltp'], resp['volume'], resp['volume_by_product'])
+    ticker
   end
 end
