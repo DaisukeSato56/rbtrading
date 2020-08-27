@@ -44,8 +44,9 @@ class APIClient
     uri = URI.parse(BASE_URL)
     uri.path = '/v1/me/getbalance'
     resp = do_request('GET', uri)
-    puts(resp)
-    resp
+    balance = resp.map { |r| Balance.new(r['currency_code'], r['amount'], r['avaliable']) }
+    puts balance
+    balance
   end
 end
 
