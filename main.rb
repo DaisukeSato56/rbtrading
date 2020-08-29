@@ -8,7 +8,10 @@ require 'uri'
 def main
   conf = ConfigList.new
   b = APIClient.new(conf.api_key, conf.api_secret)
-  b.ticker('BTC_JPY')
+  ticker = b.ticker('BTC_USD')
+  puts ticker.mid_price
+  puts ticker.time
+  puts ticker.truncate_date_time('1h')
 end
 
 main if __FILE__ == $PROGRAM_NAME

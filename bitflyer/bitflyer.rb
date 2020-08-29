@@ -7,6 +7,7 @@ require 'net/http'
 require 'openssl'
 require 'json'
 require 'uri'
+require 'time'
 
 BASE_URL = 'https://api.bitflyer.com'
 
@@ -56,7 +57,6 @@ class APIClient
     uri.path = '/v1/ticker'
     uri.query = "product_code=#{product_code}"
     resp = do_request('GET', uri)
-    ticker = Ticker.new(resp['product_code'], resp['timestamp'], resp['tick_id'], resp['best_bid'], resp['best_ask'], resp['best_bid_size'], resp['best_ask_size'], resp['total_bid_depth'], resp['total_ask_depth'], resp['ltp'], resp['volume'], resp['volume_by_product'])
-    ticker
+    Ticker.new(resp['product_code'], Time.parse(resp['timestamp']), resp['tick_id'], resp['best_bid'], resp['best_ask'], resp['best_bid_size'], resp['best_ask_size'], resp['total_bid_depth'], resp['total_ask_depth'], resp['ltp'], resp['volume'], resp['volume_by_product'])
   end
 end
