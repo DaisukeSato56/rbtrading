@@ -77,7 +77,6 @@ class BitflyerAPIClient
       now = Time.now.strftime('%s%L')
       nonce = SecureRandom.hex(16)
       sign = OpenSSL::HMAC.hexdigest('sha256', secret, now + nonce)
-      puts sign
 
       ws.send(JSON.generate({
                               method: :auth,
