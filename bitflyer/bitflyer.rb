@@ -64,7 +64,7 @@ class BitflyerAPIClient
     Ticker.new(resp['product_code'], Time.parse(resp['timestamp']), resp['tick_id'], resp['best_bid'], resp['best_ask'], resp['best_bid_size'], resp['best_ask_size'], resp['total_bid_depth'], resp['total_ask_depth'], resp['ltp'], resp['volume'], resp['volume_by_product'])
   end
 
-  def real_time_ticker(product_code)
+  def real_time_ticker(product_code, queue)
     publicChannels = ["lightning_ticker_#{product_code}"]
     privateChannels = ['child_order_events']
     ws = WebSocket::Client::Simple.connect 'wss://ws.lightstream.bitflyer.com/json-rpc'
@@ -107,8 +107,8 @@ class BitflyerAPIClient
       end
 
       ticker_data = data['params']['message'] if data['method'] == 'channelMessage'
-
-      puts Ticker.new(ticker_data['product_code'], Time.parse(ticker_data['timestamp']), ticker_data['tick_id'], ticker_data['best_bid'], ticker_data['best_ask'], ticker_data['best_bid_size'], ticker_data['best_ask_size'], ticker_data['total_bid_depth'], ticker_data['total_ask_depth'], ticker_data['ltp'], ticker_data['volume'], ticker_data['volume_by_product'])
+      ticker = Ticker.new(ticker_data['product_code'], Time.parse(ticker_data['timestamp']), ticker_data['tick_id'], ticker_data['best_bid'], ticker_data['best_ask'], ticker_data['best_bid_size'], ticker_data['best_ask_size'], ticker_data['total_bid_depth'], ticker_data['total_ask_depth'], ticker_data['ltp'], ticker_data['volume'], ticker_data['volume_by_product'])
+      queue.push(ticker)
     end
 
     ws.on :close do |e|
@@ -117,10 +117,7 @@ class BitflyerAPIClient
     end
 
     ws.on :error do |e|
-      p e
+      # p e
     end
-
-    print 'Please press key to exit.'
-    STDIN.getc
   end
 end

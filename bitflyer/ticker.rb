@@ -44,7 +44,6 @@ class Ticker
       time_format = '%Y-%m-%d %H'
     else
       raise 'action=truncate_date_time error=no_datetime_format'
-      nil
     end
 
     str_date = ticker_time.strftime(time_format)
