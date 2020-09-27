@@ -21,7 +21,8 @@ def main
   #   n = queue.pop
   #   puts n.object_id
   # end
-  puts BtcJpy_5sCandle.count
+  # puts BtcJpy_5sCandle.count
+  puts Candle.factory_candle_class('BTC_JPY', '5s').count
 end
 
 main if __FILE__ == $PROGRAM_NAME
