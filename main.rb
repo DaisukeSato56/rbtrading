@@ -7,8 +7,11 @@ require './config/config'
 require './bitflyer/bitflyer'
 
 def main
-  # conf = ConfigList.new
-  # apiClient = BitflyerAPIClient.new(conf.api_key, conf.api_secret)
+  conf = ConfigList.new
+  apiClient = BitflyerAPIClient.new(conf.api_key, conf.api_secret)
+
+  ticker = apiClient.ticker(conf.product_code)
+  Candle.create_candle_with_duration(conf.product_code, '1m', ticker)
   # queue = Queue.new
 
   # t = Thread.new do
@@ -21,8 +24,6 @@ def main
   #   n = queue.pop
   #   puts n.object_id
   # end
-  # puts BtcJpy_5sCandle.count
-  puts Candle.factory_candle_class('BTC_JPY', '5s').count
 end
 
 main if __FILE__ == $PROGRAM_NAME
