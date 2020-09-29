@@ -10,7 +10,13 @@ require './app/contollers/streamdata.rb'
 def main
   stream_thread = Thread.new do
     loop do
-      StreamData.new.stream_ingestion_data
+      begin
+        StreamData.new.stream_ingestion_data
+      rescue StandardError
+        # TODO: threadを立て直さないとエラーが起きる
+        puts 'error of websocket connection'
+        sleep 60
+      end
     end
   end
 
