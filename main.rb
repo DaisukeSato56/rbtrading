@@ -5,13 +5,17 @@ require 'uri'
 require './config/init.rb'
 require './config/config'
 require './bitflyer/bitflyer'
+require './app/contollers/streamdata.rb'
 
 def main
-  conf = ConfigList.new
-  apiClient = BitflyerAPIClient.new(conf.api_key, conf.api_secret)
+  stream_thread = Thread.new do
+    loop do
+      StreamData.new.stream_ingestion_data
+    end
+  end
 
-  ticker = apiClient.ticker(conf.product_code)
-  Candle.create_candle_with_duration(conf.product_code, '1m', ticker)
+  stream_thread.join
+
   # queue = Queue.new
 
   # t = Thread.new do
