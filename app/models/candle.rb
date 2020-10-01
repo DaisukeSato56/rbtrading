@@ -32,4 +32,15 @@ class Candle
       return BtcJpy_1hCandle if duration == DURATION_1H
     end
   end
+
+  def value
+    {
+      'time': time,
+      'open': open,
+      'close': close,
+      'high': high,
+      'low': low,
+      'volume': volume
+    }
+  end
 end
