@@ -3,7 +3,7 @@
 require_relative '../../constants.rb'
 require_relative '../../config/init.rb'
 
-class Candle
+module Candle
   def self.create_candle_with_duration(product_code, duration, ticker)
     cls = factory_candle_class(product_code, duration)
     ticker_time = ticker.truncate_date_time(duration)
