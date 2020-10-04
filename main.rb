@@ -5,7 +5,8 @@ require 'uri'
 require './config/init.rb'
 require './config/config'
 require './bitflyer/bitflyer'
-require './app/contollers/streamdata.rb'
+require './app/controllers/streamdata.rb'
+require './app/controllers/webserver.rb'
 
 def main
   # stream_thread = Thread.new do
@@ -22,9 +23,7 @@ def main
 
   # stream_thread.join
 
-  df = DataFrameCandle.new
-  df.set_all_candles
-  p df.value
+  Webserver.run! host: 'localhost', port: 8080
 end
 
 main if __FILE__ == $PROGRAM_NAME

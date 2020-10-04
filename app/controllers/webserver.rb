@@ -1,12 +1,17 @@
 # frozen_string_literal: true
 
-require 'sinatra'
+require 'sinatra/base'
+require 'sinatra/reloader'
 
-current_dir = File.dirname(__FILE__)
-views_dir = File.expand_path('../views', current_dir)
+class Webserver < Sinatra::Base
+  register Sinatra::Reloader
 
-set :views, views_dir
+  current_dir = File.dirname(__FILE__)
+  views_dir = File.expand_path('../views', current_dir)
+  set :views, views_dir
 
-get '/' do
-  erb :candle
+  get '/' do
+    @candle = 'candle'
+    erb :candle
+  end
 end
